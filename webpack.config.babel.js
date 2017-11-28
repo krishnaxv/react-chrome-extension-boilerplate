@@ -11,19 +11,30 @@ const appPath = {
   content: path.resolve(__dirname, './src/content/'),
   popup: path.resolve(__dirname, './src/popup/'),
   popupTemplate: path.resolve(__dirname, './public/popup.html'),
+  options: path.resolve(__dirname, './src/options/'),
+  optionsTemplate: path.resolve(__dirname, './public/options.html'),
   build: path.resolve(__dirname, './build'),
   source: path.resolve(__dirname, './src'),
   manifest: path.resolve(__dirname, './public/manifest.json'),
   imageAssets: path.resolve(__dirname, './src/assets/images/')
 };
 
-// Create popup.html inject script bundles
-const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-  inject: true,
-  chunks: ['popup'],
-  filename: 'popup.html',
-  template: appPath.popupTemplate
-});
+const HTMLWebpackPluginConfig = [
+  // Create popup.html inject script bundles
+  new HtmlWebpackPlugin({
+    inject: true,
+    chunks: ['popup'],
+    filename: 'popup.html',
+    template: appPath.popupTemplate
+  }),
+  // Create options.html inject script bundles
+  new HtmlWebpackPlugin({
+    inject: true,
+    chunks: ['options'],
+    filename: 'options.html',
+    template: appPath.optionsTemplate
+  })
+];
 
 // Copy extension manifest, style and icons
 const copyWebpackPluginConfig = new CopyWebpackPlugin([
@@ -32,6 +43,9 @@ const copyWebpackPluginConfig = new CopyWebpackPlugin([
   },
   {
     from: appPath.popupTemplate
+  },
+  {
+    from: appPath.optionsTemplate
   },
   {
     from: appPath.imageAssets
@@ -62,7 +76,8 @@ const config = {
   // Entry files for content page
   entry: {
     content: appPath.content,
-    popup: appPath.popup
+    popup: appPath.popup,
+    options: appPath.options
   },
   // Extension will be built into ./build folder, which we can then load as unpacked extension in Chrome
   output: {
@@ -107,7 +122,7 @@ const config = {
     ]
   },
   plugins: [
-    HTMLWebpackPluginConfig,
+    ...HTMLWebpackPluginConfig,
     loaderOptionsPluginConfig,
     definePluginConfig,
     new MinifyPlugin(),

@@ -14,6 +14,7 @@
     "default_title": "React Chrome Extension Boilerplate",
     "default_popup": "popup.html"
   },
+  "options_page": "options.html",
   "permissions": ["storage"],
   "web_accessible_resources": ["*.svg", "*.jpg", "*.png", "*.gif"]
 }
