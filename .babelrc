@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["last 7 Chrome versions"]
+        }
+      }
+    ],
+    "react",
+    "stage-0"
+  ]
+}
